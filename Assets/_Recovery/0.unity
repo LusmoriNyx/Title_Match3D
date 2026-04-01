@@ -1121,7 +1121,7 @@ MonoBehaviour:
   objectToGet1: {fileID: 0}
   ObjectToGet2: {fileID: 0}
   object1Plane: {fileID: 523655933}
-  object2Plane: {fileID: 1379959504}
+  Object2Plane: {fileID: 1379959504}
 --- !u!4 &1886321074
 Transform:
   m_ObjectHideFlags: 0
