@@ -2,8 +2,22 @@
 
 public class DragAndLift : MonoBehaviour
 {
-    private Vector3 mOffset;
-    private float mZCoord;
+    public static DragAndLift instance; // Singleton instance
+     void Awake()
+    {
+        // Thiết lập singleton instance
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private Vector3 mOffset; // Khoảng cách từ tâm vật đến điểm click
+    private float mZCoord; // Khoảng cách Z từ Camera đến vật thể
 
     [Header("Cài đặt nhấc vật")]
     public float liftAmount = 0.5f; // Khoảng cách y muốn nhấc lên
@@ -36,4 +50,12 @@ public class DragAndLift : MonoBehaviour
         // Cập nhật vị trí vật thể theo chuột + offset đã tính
         transform.position = GetMouseWorldPos() + mOffset;
     }
+
+    
+
+     public void OnMouseUp()
+    {
+        mOffset = Vector3.zero;
+    }
+
 }
