@@ -78,7 +78,7 @@ public class SmoothDrag : MonoBehaviour
         }
     }
 
-    private Vector3 GetMouseWorldPos(Vector2 mousePos)
+    private Vector3 GetMouseWorldPos(Vector2 mousePos) // Chuyển tọa độ chuột sang thế giới
     {
         Vector3 mousePoint = new Vector3(mousePos.x, mousePos.y, zCoord);
         return Camera.main.ScreenToWorldPoint(mousePoint);

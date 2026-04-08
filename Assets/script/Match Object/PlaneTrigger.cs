@@ -2,33 +2,33 @@ using UnityEngine;
 
 public class PlaneTrigger : MonoBehaviour
 {
-    private BoxCollider PlaneBox;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        PlaneBox = gameObject.GetComponent<BoxCollider>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
 
-    void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.CompareTag("MatchObject"))
+        if (collision.gameObject.CompareTag("MatchObject"))
         {
-            if (GetObject.instance.objectToGet1 == null)
-            {
-                GetObject.instance.objectToGet1 = other.gameObject;
-                GetObject.instance.SetObjectPostion();
+            Debug.Log("Collided with PlaneTrigger");
 
-            }
-            else if (GetObject.instance.ObjectToGet2 == null)
+            if (GetObject.instance.objectToGet1 == null && GetObject.instance.object1Plane.isEmpty)
             {
-                GetObject.instance.ObjectToGet2 = other.gameObject;
+                GetObject.instance.objectToGet1 = collision.gameObject;
+                GetObject.instance.object1Plane.isEmpty = false;
                 GetObject.instance.SetObjectPostion();
+                //DragAndLift.instance.OnMouseUp();
+            }
+
+            else if (GetObject.instance.ObjectToGet2 == null && GetObject.instance.object2Plane.isEmpty)
+            {
+                GetObject.instance.ObjectToGet2 = collision.gameObject;
+                GetObject.instance.object2Plane.isEmpty = false;
+                GetObject.instance.SetObjectPostion();
+                //DragAndLift.instance.OnMouseUp();
             }
         }
     }
