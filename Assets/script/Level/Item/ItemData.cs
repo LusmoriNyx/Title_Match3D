@@ -5,5 +5,5 @@ public class ItemData : ScriptableObject
 {
     [SerializeField] private ItemType itemType;
     public GameObject itemPrefab;
-    private int spawnAmount = 2;
+    public int spawnAmount = 2;
 }
