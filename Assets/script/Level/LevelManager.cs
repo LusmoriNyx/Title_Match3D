@@ -5,20 +5,21 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] private List<LevelData> levelDataList;
 
-    private List<GameObject> spawnedItems = new List<GameObject>();
-
     [SerializeField] private Transform plane;
     [SerializeField] private float ySpawnPosition = 0.2f;
 
     private int currentLevelIndex = 0;
+    [SerializeField] private float minDistance = 1f;
     void Start()
     {
+        InitializeFuntionPool();
         SpawnItem();
     }
     public void NextLevel()
     {
-        ClearSpawnedItems();
+        ClearFuntionPool();
         currentLevelIndex++;
+        InitializeFuntionPool();
         SpawnItem();
     }
     private void SpawnItem()
@@ -31,18 +32,35 @@ public class LevelManager : MonoBehaviour
         {
             for (int i = 0; i < item.spawnAmount; i++)
             {
+                bool isTooClose = true;
                 Vector3 spawnPosition = new Vector3(Random.Range(xMin, xMax), ySpawnPosition, Random.Range(zMin, zMax));
-                GameObject spawnedGameObject = Instantiate(item.itemPrefab, spawnPosition, Quaternion.identity);
-                spawnedItems.Add(spawnedGameObject);
+                while (isTooClose)
+                {
+                    GameObject spawnedGameObject = ObjectPoolManager.Instance.GetObject(item.ItemType);
+                    if (spawnedGameObject != null)
+                    {
+                        spawnedGameObject.transform.position = spawnPosition;
+                        spawnedGameObject.transform.rotation = Quaternion.identity;
+                    }
+                    isTooClose = false;
+                    foreach (var itemSpawned in levelDataList[currentLevelIndex].itemDataThisLevel)
+                    {
+                        if(Vector3.Distance(spawnPosition, itemSpawned.itemPrefab.transform.position) < minDistance)
+                        {
+                            isTooClose = true;
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
-    private void ClearSpawnedItems()
+    private void InitializeFuntionPool()
     {
-        foreach (var item in spawnedItems)
-        {
-            Destroy(item);
-        }
-        spawnedItems.Clear();
+        ObjectPoolManager.Instance.InitPool(levelDataList[currentLevelIndex].itemDataThisLevel);
+    }
+    private void ClearFuntionPool()
+    {
+        ObjectPoolManager.Instance.ClearDictionary();
     }
 }
