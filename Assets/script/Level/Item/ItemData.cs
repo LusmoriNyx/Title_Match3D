@@ -4,6 +4,8 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     [SerializeField] private ItemType itemType;
+    public ItemType ItemType => itemType;
+
     public GameObject itemPrefab;
     public int spawnAmount = 2;
 }
